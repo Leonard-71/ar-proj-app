@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicație AR.js - Realitate Augmentată pe Web">
+    <title>AR.js - Realitate Augmentată</title>
+    
+    <!-- A-Frame Core -->
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    
+    <!-- AR.js with Marker Tracking -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <h2>Se încarcă AR...</h2>
+            <p>Permiteți accesul la cameră când vi se solicită</p>
+        </div>
+    </div>
+
+    <!-- Instructions Overlay -->
+    <div id="instructions" class="instructions-overlay">
+        <div class="instructions-content">
+            <h2>📱 Cum să folosești aplicația</h2>
+            <ol>
+                <li>Permiteți accesul la cameră</li>
+                <li>Tipăriți markerul Hiro (link în README)</li>
+                <li>Puneți markerul în fața camerei</li>
+                <li>Vă bucurați de experiența AR!</li>
+            </ol>
+            <button id="close-instructions" class="btn-close">Închide</button>
+        </div>
+    </div>
+
+    <!-- Info Button -->
+    <button id="info-btn" class="info-button" title="Instrucțiuni">ℹ️</button>
+
+    <!-- AR Scene -->
+    <a-scene 
+        id="ar-scene"
+        embedded 
+        arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        vr-mode-ui="enabled: false"
+        renderer="logarithmicDepthBuffer: true; precision: medium;"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    >
+        <!-- Hiro Marker -->
+        <a-marker 
+            id="hiro-marker"
+            type="pattern" 
+            preset="hiro"
+            raycaster="objects: .clickable"
+            emitevents="true"
+            cursor="fuse: false; rayOrigin: mouse;"
+        >
+            <!-- 3D Model - T-Rex -->
+            <a-entity
+                id="ar-model"
+                position="0 0.5 0"
+                scale="0.05 0.05 0.05"
+                rotation="0 0 0"
+                animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+                gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+                class="clickable"
+            ></a-entity>
+
+            <!-- Light -->
+            <a-light type="ambient" color="#fff" intensity="0.6"></a-light>
+            <a-light type="directional" position="1 1 1" intensity="0.8"></a-light>
+        </a-marker>
+
+        <!-- Camera -->
+        <a-entity camera look-controls="enabled: false"></a-entity>
+    </a-scene>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>
+
