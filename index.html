@@ -42,6 +42,83 @@
     <!-- Info Button -->
     <button id="info-btn" class="info-button" title="Instrucțiuni">ℹ️</button>
 
+    <!-- Control Panel -->
+    <div id="control-panel" class="control-panel">
+        <div class="panel-header">
+            <h3>🎮 Control Panel</h3>
+            <button id="toggle-panel" class="toggle-btn">−</button>
+        </div>
+        
+        <div class="panel-content">
+            <!-- Model Selector -->
+            <div class="control-section">
+                <label class="section-label">📦 Model 3D</label>
+                <div class="button-group">
+                    <button class="control-btn active" data-model="trex">🦖 T-Rex</button>
+                    <button class="control-btn" data-model="box">📦 Cub</button>
+                    <button class="control-btn" data-model="sphere">⚪ Sferă</button>
+                </div>
+            </div>
+
+            <!-- Animation Controls -->
+            <div class="control-section">
+                <label class="section-label">🎬 Animații</label>
+                <div class="button-group">
+                    <button id="toggle-rotate" class="control-btn active">🔄 Rotire</button>
+                    <button id="toggle-bounce" class="control-btn">⬆️ Salt</button>
+                    <button id="toggle-pulse" class="control-btn">💓 Puls</button>
+                </div>
+            </div>
+
+            <!-- Scale Controls -->
+            <div class="control-section">
+                <label class="section-label">📏 Mărime</label>
+                <div class="slider-container">
+                    <input type="range" id="scale-slider" class="slider" min="0.5" max="2" step="0.1" value="1">
+                    <span id="scale-value" class="slider-value">100%</span>
+                </div>
+            </div>
+
+            <!-- Speed Controls -->
+            <div class="control-section">
+                <label class="section-label">⚡ Viteză Animație</label>
+                <div class="slider-container">
+                    <input type="range" id="speed-slider" class="slider" min="0.5" max="3" step="0.1" value="1">
+                    <span id="speed-value" class="slider-value">100%</span>
+                </div>
+            </div>
+
+            <!-- Color Controls -->
+            <div class="control-section">
+                <label class="section-label">🎨 Culoare</label>
+                <div class="color-picker-group">
+                    <input type="color" id="color-picker" class="color-picker" value="#ffffff">
+                    <button id="reset-color" class="control-btn small">🔄 Reset</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="control-section">
+                <div class="button-group">
+                    <button id="reset-all" class="control-btn danger">🔄 Reset Tot</button>
+                    <button id="take-screenshot" class="control-btn">📸 Screenshot</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Bar -->
+    <div id="status-bar" class="status-bar">
+        <div class="status-item">
+            <span class="status-label">Marker:</span>
+            <span id="marker-status" class="status-value">⏳ Căutare...</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">FPS:</span>
+            <span id="fps-counter" class="status-value">--</span>
+        </div>
+    </div>
+
     <!-- AR Scene -->
     <a-scene 
         id="ar-scene"
@@ -60,20 +137,49 @@
             emitevents="true"
             cursor="fuse: false; rayOrigin: mouse;"
         >
-            <!-- 3D Model - T-Rex -->
-            <a-entity
-                id="ar-model"
-                position="0 0.5 0"
-                scale="0.05 0.05 0.05"
-                rotation="0 0 0"
-                animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
-                gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-                class="clickable"
-            ></a-entity>
+            <!-- 3D Model Container -->
+            <a-entity id="model-container" position="0 0.5 0">
+                <!-- T-Rex Model -->
+                <a-entity
+                    id="ar-model-trex"
+                    class="ar-model clickable"
+                    position="0 0 0"
+                    scale="0.05 0.05 0.05"
+                    rotation="0 0 0"
+                    animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+                    gltf-model="https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+                    visible="true"
+                ></a-entity>
 
-            <!-- Light -->
+                <!-- Box Model -->
+                <a-box
+                    id="ar-model-box"
+                    class="ar-model clickable"
+                    position="0 0 0"
+                    scale="0.5 0.5 0.5"
+                    rotation="0 0 0"
+                    color="#4CC3D9"
+                    animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+                    visible="false"
+                ></a-box>
+
+                <!-- Sphere Model -->
+                <a-sphere
+                    id="ar-model-sphere"
+                    class="ar-model clickable"
+                    position="0 0 0"
+                    radius="0.3"
+                    rotation="0 0 0"
+                    color="#EF2D5E"
+                    animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+                    visible="false"
+                ></a-sphere>
+            </a-entity>
+
+            <!-- Enhanced Lighting -->
             <a-light type="ambient" color="#fff" intensity="0.6"></a-light>
             <a-light type="directional" position="1 1 1" intensity="0.8"></a-light>
+            <a-light type="point" position="0 2 0" intensity="0.5" color="#fff"></a-light>
         </a-marker>
 
         <!-- Camera -->
